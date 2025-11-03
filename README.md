@@ -5,7 +5,8 @@ Maths Compiler with GUI Interface
 This project implements a complete arithmetic expression compiler with a graphical user interface (GUI). The compiler can handle mathematical expressions, generate intermediate code (postfix), produce three-address code (TAC), and compute the final result. It includes both backend and frontend components, ensuring modularity and scalability.
 
 # How to run 
-- download the folder
+- copy to cmd > git clone https://github.com/Newton2003/Maths-Compiler.git
 - open it on vscode
 - run only the "GUI.py" file
   
+
