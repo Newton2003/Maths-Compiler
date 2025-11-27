@@ -1,6 +1,6 @@
-# parser.py
+# my_parser.py
 
-from maths_functions import call_function
+from maths_functions import call_function  # your custom math functions
 
 class Parser:
     def __init__(self, tokens):

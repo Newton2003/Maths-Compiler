@@ -115,7 +115,6 @@ class CompilerGUI:
         )
         self.history_box.pack(fill="both", expand=True, padx=5, pady=5)
 
-        # Click instructions
         tip_label = tk.Label(
             history_frame,
             text="Click on an expression to reuse it",
@@ -130,28 +129,48 @@ class CompilerGUI:
 
         # Storage
         self.history = []
+        
+        
 
     def compile_expression(self):
         expr = self.input_text.get().strip()
         if not expr:
             messagebox.showwarning("Input Required", "Please enter an expression.")
             return
-
         try:
-            postfix, tac, result = evaluate_expression(expr)
+            # Get dictionary from evaluate_expression
+            data = evaluate_expression(expr)
 
-            output_text = (
-                f"Intermediate code (postfix): {postfix}\n"
-                f"Three Address Code (TAC):\n"
-            )
+            # extract values
+            tokens = data['tokens']
+            postfix = data['postfix']
+            tac = data['tac']
+            assembly = data['assembly']
+            machine = data['machine_code']
+            result = data['result']
+
+            # build output text
+            output_text = f"Tokens: {tokens}\n"
+            output_text += f"Intermediate code (postfix): {postfix}\n"
+            output_text += "Three Address Code (TAC):\n"
             for line in tac:
                 output_text += f"  {line}\n"
+
+            output_text += "Assembly:\n"
+            for line in assembly:
+                output_text += f"  {line}\n"
+
+            output_text += "Machine Code:\n"
+            for line in machine:
+                output_text += f"  {line}\n"
+
             output_text += f"Result: {result}\n"
 
+            # display in GUI
             self.output_box.delete("1.0", tk.END)
             self.output_box.insert(tk.END, output_text)
 
-            # Add to history
+            # add to history
             self.add_to_history(expr, result)
 
         except Exception as e:
@@ -165,7 +184,6 @@ class CompilerGUI:
         self.history_box.config(state="disabled")
 
     def on_history_click(self, event):
-        # Get line clicked
         index = self.history_box.index(f"@{event.x},{event.y}")
         line = self.history_box.get(f"{index} linestart", f"{index} lineend").strip()
         if "=" in line:
